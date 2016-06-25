@@ -18,9 +18,9 @@ function ilc_init(){
 	if (!current_theme_supports('custom-logo')) {
 		add_theme_support( 'custom-logo' );
 	}
-	// if (!current_theme_supports('custom-header')) {
-	// 	add_theme_support( 'custom-header' );
-	// }
+	if (!current_theme_supports('custom-header')) {
+		add_theme_support( 'custom-header' );
+	}
 }
 
 
@@ -99,18 +99,42 @@ function ilc_page_html(){
 add_action( 'login_head', 'ilc_custom_css' );
 function ilc_custom_css(){
 	$values = get_option('ilc_settings' );
-	$bg_color = ilc_add_hash(get_background_color());
-	
 	?>
 	<!-- Instant Login Customizer by Melissa Cabral-->
 	<style type="text/css">
+		<?php if($values['use_background']):
+		$bg_color = ilc_add_hash(get_background_color());
+		$background = get_background_image();?>
 		body, html{
 			background-color:<?php echo $bg_color; ?>;
+			<?php
+			if ( $background ) {
+				$image = " background-image: url('$background');";
+
+				$repeat = get_theme_mod( 'background_repeat', get_theme_support( 'custom-background', 'default-repeat' ) );
+				if ( ! in_array( $repeat, array( 'no-repeat', 'repeat-x', 'repeat-y', 'repeat' ) ) )
+					$repeat = 'repeat';
+				$repeat = " background-repeat: $repeat;";
+
+				$position = get_theme_mod( 'background_position_x', get_theme_support( 'custom-background', 'default-position-x' ) );
+				if ( ! in_array( $position, array( 'center', 'right', 'left' ) ) )
+					$position = 'left';
+				$position = " background-position: top $position;";
+
+				$attachment = get_theme_mod( 'background_attachment', get_theme_support( 'custom-background', 'default-attachment' ) );
+				if ( ! in_array( $attachment, array( 'fixed', 'scroll' ) ) )
+					$attachment = 'scroll';
+				$attachment = " background-attachment: $attachment;";
+
+				echo  $image . $repeat . $position . $attachment;
+			}
+			?>
 		}
 		<?php 
+		endif;
 		//CUSTOM LOGO
 		if(has_custom_logo() AND $values['use_logo'] ): 
-		$logo_image =  wp_get_attachment_image_url( get_theme_mod( 'custom_logo'));
+			$logo_image =  wp_get_attachment_image_url( get_theme_mod( 'custom_logo'));
 		?>
 		.login h1 a{
 			background-image:url(<?php echo $logo_image ?>);
@@ -121,7 +145,7 @@ function ilc_custom_css(){
 
 		//CUSTOM HEADER
 		if(has_header_image() AND $values['use_header'] ): 
-		$header_image =  get_header_image();
+			$header_image =  get_header_image();
 		?>
 		.login h1 {
 			background-image:url(<?php echo $header_image ?>);
@@ -130,11 +154,11 @@ function ilc_custom_css(){
 		}
 		<?php endif; //custom logo 
 
-	echo $values['custom_css'];
-	?>
+		echo $values['custom_css'];
+		?>
 
 
-</style>
-<?php
+	</style>
+	<?php
 }
 

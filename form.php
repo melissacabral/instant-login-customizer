@@ -44,4 +44,9 @@
 		
 		<?php submit_button('Save Changes' ); ?>
 	</form>
+
+
+	<h1>Preview:</h1>
+	<iframe src="<?php echo plugins_url( 'preview.php', __FILE__ ); ?>"
+	width="800" height="500"></iframe>
 </div>

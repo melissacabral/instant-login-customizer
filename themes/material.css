@@ -1,0 +1,13 @@
+/*
+
+ Material Theme CSS for Instant Login Customizer 
+ by Melissa Cabral
+
+*/
+
+
+.wp-core-ui .button.button-large{
+	background: coral;
+	width:100%;
+	border-radius:300px;
+}

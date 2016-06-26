@@ -14,7 +14,7 @@
 						<label>Theme Customizer</label>
 					</th>
 					<td>
-					<p class="description">Check these boxes if you're trying to make your login form match your theme customizations</p>
+					<p class="description">Check these options if you're trying to make your login form match your theme customizations</p>
 					<fieldset>
 						<input value="1" type="checkbox" name="ilc_settings[use_background]" <?php checked(1, $values['use_background'] ); ?>>
 						<label>Use Theme's Custom Background</label>
@@ -29,7 +29,19 @@
 				</tr>
 				<tr valign="top">
 					<th scope="row">
-						<label>Additional CSS</label>
+						<label>Optional Templates</label>
+					</th>
+					<td>
+						<select name="ilc_settings[css_theme]">
+							<option>WordPress Default</option>
+							<option value="material" <?php 	selected( 'material', $values['css_theme'] ); ?>>Material</option>
+							<option value="dark">Dark</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
+						<label>Additional Login CSS</label>
 					</th>
 					<td>
 						<textarea name="ilc_settings[custom_css]" class="large-text code"><?php echo $values['custom_css'] ?></textarea>
@@ -42,11 +54,11 @@
 		<br>
 		
 		
-		<?php submit_button('Save Changes' ); ?>
+		<?php submit_button('Save &amp; Preview' ); ?>
 	</form>
 
 
 	<h1>Preview:</h1>
 	<iframe src="<?php echo plugins_url( 'preview.php', __FILE__ ); ?>"
-	width="800" height="500"></iframe>
+	width="700" height="600"></iframe>
 </div>

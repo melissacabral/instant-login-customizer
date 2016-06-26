@@ -39,6 +39,19 @@ function ilc_add_hash($color){
 	}
 }
 
+/**
+ * Calculate contrasting color for the links below the login form
+ * against the custom bg color
+ * @param $hexcolor  a 6 digit color, like FFCC00
+ */
+function ilc_get_contrast($hexcolor){
+	$r = hexdec(substr($hexcolor,0,2));
+	$g = hexdec(substr($hexcolor,2,2));
+	$b = hexdec(substr($hexcolor,4,2));
+	$yiq = (($r*299)+($g*587)+($b*114))/1000;
+	return ($yiq >= 128) ? 'black' : 'white';
+}
+
 
 
 /**
@@ -71,6 +84,8 @@ function ilc_sanitize($input){
 	$input['use_logo'] = wp_filter_nohtml_kses( $input['use_logo'] );
 	$input['use_logo'] = wp_filter_nohtml_kses( $input['use_logo'] );
 	$input['use_background'] = wp_filter_nohtml_kses( $input['use_background'] );
+	$input['css_theme'] = wp_filter_nohtml_kses( $input['css_theme'] );
+
 
 	$input['custom_css'] = wp_filter_nohtml_kses( $input['custom_css'] );
 
@@ -94,6 +109,19 @@ function ilc_page_html(){
 }
 
 /**
+ * Enqueue an optional CSS theme
+ */
+add_action('login_enqueue_scripts', 'ilc_nq_css' );
+function ilc_nq_css(){
+	$values = get_option( 'ilc_settings' );
+	$css = $values['css_theme'];
+	if($css){
+		$url = plugins_url( 'themes/' . $css . '.css', __FILE__ );
+		wp_enqueue_style( 'ilc_theme_css', $url );
+	}
+}
+
+/**
  * Embedded CSS Output
  */
 add_action( 'login_head', 'ilc_custom_css' );
@@ -102,9 +130,13 @@ function ilc_custom_css(){
 	?>
 	<!-- Instant Login Customizer by Melissa Cabral-->
 	<style type="text/css">
-		<?php if($values['use_background']):
-		$bg_color = ilc_add_hash(get_background_color());
-		$background = get_background_image();?>
+		<?php 
+		if($values['use_background'] && get_background_color()):
+			$bg_color = get_background_color();
+			$contrast = ilc_get_contrast($bg_color);
+			$bg_color = ilc_add_hash($bg_color);
+			$background = get_background_image();
+		?>
 		body, html{
 			background-color:<?php echo $bg_color; ?>;
 			<?php
@@ -130,6 +162,10 @@ function ilc_custom_css(){
 			}
 			?>
 		}
+		.login #nav a, 
+		.login #backtoblog a{
+			color: <?php echo $contrast; ?>
+		}
 		<?php 
 		endif;
 		//CUSTOM LOGO
@@ -140,6 +176,7 @@ function ilc_custom_css(){
 			background-image:url(<?php echo $logo_image ?>);
 			width:auto;
 			background-size:contain;
+			margin:1em;
 		}
 		<?php endif; //custom logo 
 
@@ -150,7 +187,13 @@ function ilc_custom_css(){
 		.login h1 {
 			background-image:url(<?php echo $header_image ?>);
 			width:auto;
-			background-size:contain;
+			background-size:cover;
+			background-position:center center;
+			margin:0;
+			padding:1px;
+		}
+		.login form{
+			margin-top:0;
 		}
 		<?php endif; //custom logo 
 

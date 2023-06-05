@@ -44,7 +44,7 @@
 						<label>Additional Login CSS</label>
 					</th>
 					<td>
-						<textarea name="ilc_settings[custom_css]" class="large-text code"><?php echo $values['custom_css'] ?></textarea>
+						<textarea name="ilc_settings[custom_css]" class="large-text code" rows="10"><?php echo $values['custom_css'] ?></textarea>
 					</td>
 				</tr>
 				
@@ -59,6 +59,6 @@
 
 
 	<h1>Preview:</h1>
-	<iframe src="<?php echo plugins_url( 'preview.php', __FILE__ ); ?>"
+	<iframe style="border:solid 1px #ccc" src="<?php echo plugins_url( 'preview.php', __FILE__ ); ?>"
 	width="700" height="600"></iframe>
 </div>

@@ -68,6 +68,7 @@ function ilc_settings(){
 		'use_background' => 1,
 		'use_header' => 1,
 		'custom_css' => '',
+		'css_theme' => ''
 		));
 
 }
@@ -107,7 +108,17 @@ function ilc_page_html(){
 		die('You do not have permission to view this page');
 	}
 }
-
+/**
+ * change the login logo text and link 
+ */
+add_filter( 'login_headerurl', 'mmc_login_logo_link' );
+function mmc_login_logo_link(){
+	return home_url('/');
+}
+add_filter( 'login_headertext', 'mmc_login_logo_title' );
+function mmc_login_logo_title(){
+	return get_bloginfo( 'name' );
+}
 /**
  * Enqueue an optional CSS theme
  */
@@ -170,13 +181,15 @@ function ilc_custom_css(){
 		endif;
 		//CUSTOM LOGO
 		if(has_custom_logo() AND $values['use_logo'] ): 
-			$logo_image =  wp_get_attachment_image_url( get_theme_mod( 'custom_logo'));
+			$custom_logo_id = get_theme_mod( 'custom_logo' );
+			$logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
 		?>
 		.login h1 a{
-			background-image:url(<?php echo $logo_image ?>);
+			background-image:url(<?php echo $logo[0] ?>);
 			width:auto;
 			background-size:contain;
 			margin:1em;
+			height:100px;
 		}
 		<?php endif; //custom logo 
 

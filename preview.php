@@ -16,22 +16,22 @@ require('../../../wp-blog-header.php');
 
 <body class="login login-action-login wp-core-ui  locale-en-us">
 	<div id="login">
-		<h1><a href="https://wordpress.org/" title="Powered by WordPress" tabindex="-1">Paulkaiju</a></h1>
+		<h1><a href="#" title="Custom Logo" tabindex="-1"><?php bloginfo( 'name' ) ?></a></h1>
 
 		<form name="loginform" id="loginform">
 			<p>
 				<label for="user_login">Username or Email<br />
-					<input type="text" name="log" id="user_login" class="input"  size="20" value="User Name" />
+					<input type="text" class="input"  size="20" value="User Name" />
 				</label>
 			</p>
 			<p>
 				<label for="user_pass">Password<br />
-					<input type="password" name="pwd" id="user_pass" class="input"  size="20" value="password" />
+					<input type="password" class="input"  size="20" value="password" />
 				</label>
 			</p>
 			<p class="forgetmenot">
 				<label for="rememberme">
-					<input name="rememberme" type="checkbox" id="rememberme" value="forever"  /> Remember Me
+					<input type="checkbox" checked /> Remember Me
 				</label>
 			</p>
 			<p class="submit">
@@ -43,7 +43,7 @@ require('../../../wp-blog-header.php');
 			<a href="#">Lost your password?</a>
 		</p>
 
-		<p id="backtoblog"><a href="#">&larr; Back to Paulkaiju</a></p>
+		<p id="backtoblog"><a href="#">&larr; Back to <?php bloginfo( 'name' ) ?></a></p>
 
 	</div>
 </body>
